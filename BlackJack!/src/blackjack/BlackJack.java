@@ -16,6 +16,7 @@ public class BlackJack {
      */
     public static void main(String[] args) {
         Mazo m1=new Mazo();
+        m1.mesclarMazo();
     }
     
 }
