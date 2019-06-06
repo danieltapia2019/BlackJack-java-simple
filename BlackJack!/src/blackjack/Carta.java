@@ -10,12 +10,16 @@ package blackjack;
  * @author DanielTapia
  */
 public class Carta {
+
     int valor;
     int valor2; //caso especial para el as
     String nombre;
     int numero;
     int pinta;
-    public Carta(){ }
+
+    public Carta() {
+    }
+
     public Carta(int numero, int pinta) {
         this.numero = numero;
         this.pinta = pinta;
@@ -64,17 +68,17 @@ public class Carta {
                 this.numero = 10;
                 break;
             case 11:
-                this.nombre="J";
+
                 this.pinta = 1;
                 this.numero = 11;
                 break;
             case 12:
-                this.nombre="Q";
+
                 this.pinta = 1;
                 this.numero = 12;
                 break;
             case 13:
-                this.nombre="K";
+
                 this.pinta = 1;
                 this.numero = 13;
                 break;
@@ -115,22 +119,22 @@ public class Carta {
                 this.numero = 9;
                 break;
             case 23:
-                
+
                 this.pinta = 2;
                 this.numero = 10;
                 break;
             case 24:
-                 this.nombre="J";
+
                 this.pinta = 2;
                 this.numero = 11;
                 break;
             case 25:
-                this.nombre="Q";
+
                 this.pinta = 2;
                 this.numero = 12;
                 break;
             case 26:
-                this.nombre="K";
+
                 this.pinta = 2;
                 this.numero = 13;
                 break;
@@ -175,17 +179,17 @@ public class Carta {
                 this.numero = 10;
                 break;
             case 37:
-                 this.nombre="Jack";
+
                 this.pinta = 3;
                 this.numero = 11;
                 break;
             case 38:
-                this.nombre="Q";
+
                 this.pinta = 3;
                 this.numero = 12;
                 break;
             case 39:
-                this.nombre="K";
+
                 this.pinta = 3;
                 this.numero = 13;
                 break;
@@ -222,7 +226,7 @@ public class Carta {
                 this.numero = 8;
                 break;
             case 48:
-                this.pinta =4;
+                this.pinta = 4;
                 this.numero = 9;
                 break;
             case 49:
@@ -230,76 +234,90 @@ public class Carta {
                 this.numero = 10;
                 break;
             case 50:
-                 this.nombre="J";
+
                 this.pinta = 4;
                 this.numero = 11;
                 break;
             case 51:
-                this.nombre="Q";
+
                 this.pinta = 4;
                 this.numero = 12;
                 break;
             case 52:
-                this.nombre="K";
+
                 this.pinta = 4;
                 this.numero = 13;
                 break;
 
         }
-        switch(numero){
+        switch (numero) {
             case 1:
-                this.valor=11;
-                this.valor2=1;
+                this.nombre = "As";
+                this.valor = 11;
+                this.valor2 = 1;
                 break;
             case 2:
-                this.valor=2;
+                this.valor = 2;
                 break;
-                case 3:
-                this.valor=3;
+            case 3:
+                this.valor = 3;
                 break;
-                case 4:
-                this.valor=4;
+            case 4:
+                this.valor = 4;
                 break;
-                case 5:
-                this.valor=5;
+            case 5:
+                this.valor = 5;
                 break;
-                case 6:
-                this.valor=6;
+            case 6:
+                this.valor = 6;
                 break;
-                case 7:
-                this.valor=7;
+            case 7:
+                this.valor = 7;
                 break;
-                case 8:
-                this.valor=8;
+            case 8:
+                this.valor = 8;
                 break;
-                case 9:
-                this.valor=9;
+            case 9:
+                this.valor = 9;
                 break;
-                case 10:
-                this.valor=10;
+            case 10:
+                this.valor = 10;
                 break;
-                case 11:
-                this.valor=10;
+            case 11:
+                this.valor = 10;
+                this.nombre = "J";
                 break;
-                case 12:
-                this.valor=10;
+            case 12:
+                this.valor = 10;
+                this.nombre = "Q";
                 break;
-                case 13:
-                this.valor=10;
+            case 13:
+                this.valor = 10;
+                this.nombre = "K";
                 break;
-                
+
         }
     }
-    public void mostrarCarta(){
-        String pin="";
-        int num=numero;
-        if(this.pinta==1)pin="Picas";
-        if(this.pinta==2)pin="Corazones";
-        if(this.pinta==3)pin="Treboles";
-        if(this.pinta==4)pin="Diamantes";
-        if(num>10){
-            System.out.println(this.nombre+" de "+pin);
-        }else
-            System.out.println(num+" de "+pin);
+
+    public void mostrarCarta() {
+        String pin = "";
+        int num = numero;
+        if (this.pinta == 1) {
+            pin = "Picas";
         }
+        if (this.pinta == 2) {
+            pin = "Corazones";
+        }
+        if (this.pinta == 3) {
+            pin = "Treboles";
+        }
+        if (this.pinta == 4) {
+            pin = "Diamantes";
+        }
+        if (num > 10 || num==1) {
+            System.out.println(this.nombre + " de " + pin);
+        } else {
+            System.out.println(num + " de " + pin);
+        }
+    }
 }
