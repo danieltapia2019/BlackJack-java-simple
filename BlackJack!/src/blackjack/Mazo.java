@@ -24,14 +24,16 @@ public class Mazo {
         }
     }
 
-    public void mesclarMazo() { //intercalar 
-        int veces = (int) (Math.random() * (10 - 5 + 1) + 5); //El croupier va hacer de 5 a 10 veces este tipo de mezcla de cartas
+    public void mesclarMazo1() { //intercalar 
+        int veces = (int) (Math.random() * (7 - 4 + 1) + 4); //El croupier va hacer de 4 a 7 veces este tipo de mezcla de cartas
+
         for (int v = 0; v < veces; v++) {
 
-            int k = (int) (Math.random() * (16 - 10 + 1) + 10);  //Cortara de 10 a 16 cartas ,es al azar
+            int k = (int) (Math.random() * (25 - 15 + 1) + 15);  //Cortara de 15 a 25 cartas ,es al azar
 
             Carta[] aux = new Carta[k]; //arreglo auxiliar para ir almacenando las cartas que se cortaron
-            int indice = k / 2;  //indice para luego ir colocandolas
+            int div = (int) (Math.random() * (12 - 7 + 1) + 7); //al ir soltando las cartas, soltara de 7 a 12 cartas en una primera parte y luego la restante
+            int indice = k - div;  //indice para luego ir colocandolas
 
             for (int i = 0; i < mazo.length; i++) {
                 if (i < k) {
@@ -39,13 +41,13 @@ public class Mazo {
                     mazo[i] = mazo[i + k];
                 } else if (i < mazo.length - k) {
                     mazo[i] = mazo[i + k];
-                } else if (i < mazo.length - (k / 2)) {
+                } else if (i < mazo.length - (k - div)) { //cuando entra aca se suelta una parte de las cartas seleccionadas
 
                     mazo[i] = aux[indice];
 
                     indice++;
                 } else {
-                    if (i == mazo.length - (k / 2)) {
+                    if (i == mazo.length - (k - div)) { // cuando entra aca termina de soltar las cartas restantes de las seleccinoadas
                         indice = 0;
                     }
 
@@ -53,11 +55,75 @@ public class Mazo {
                     indice++;
 
                 }
-                
 
             }
         }
-     
+
+    }
+
+    public void mesclarMazo2() {//separar el mazo en dos partes por igual aproximadamente y ir soltando cartas de ambas partes
+        int veces = (int) (Math.random() * (7 - 4 + 1) + 4); //El croupier va hacer de 4 a 7 veces este tipo de mezcla de cartas
+
+        for (int v = 0; v < veces; v++) {
+            int k = (int) (Math.random() * (30 - 22 + 1) + 22); // k sera el numero por el que aproximadamente se dividira el mazo en dos partes
+
+            Carta[] aux1 = new Carta[k];
+            Carta[] aux2 = new Carta[mazo.length - k]; //auxiliares para almacenar las dos partes del mazo
+            int indice1 = 0;
+            int indice2 = 0;
+            
+            for (int i = 0; i < mazo.length; i++) {
+                if (i < k) {
+                    aux1[i] = mazo[i];
+                } else {
+                    aux2[i - k] = mazo[i];
+                }
+
+            }
+
+            //ya se almacenaron las cartas en dos partes 
+            boolean cartaPrim = true; //esta variable es para determinar cual de las dos partes va soltando cartas
+            boolean limiteaux1 = false; //variables para saber si algunas de las partes divididas llego a su limite
+            boolean limiteaux2 = false;
+            int n1;
+            int n2;
+            /*n1 y n2 seran generados al azar entre 1 y 4. Este numero representa cuantas cartas se van soltando 
+            de cada una de las dos partes. Se considera que a medida que van soltando las cartas se sueltan de 1 a 4 como mucho
+            y junto con las variables booleanas se controla que si una parte llego al limite automaticamente se soltaran 
+            todas las cartas restantes de la otra parte*/
+            for (int i = 0; i < mazo.length; i++) {
+                n1 = (int) (Math.random() * (4 - 1 + 1) + 1);//generando de 1 a 4 aleatoriamente
+                n2 = (int) (Math.random() * (4 - 1 + 1) + 1); //generando de 1 a 4 aleatoriamente
+                //Utilize dos random de 1 a 4 para hacer mas aleatorio y eficaz (mas real) el repartido de cartas de ambas partes
+                if ((cartaPrim == true && limiteaux1 == false) || (limiteaux1 == false && limiteaux2 == true)) {
+                    mazo[i] = aux1[indice1];
+//                    System.out.println("Aux1"); con esta linea va viendo si entro carta de esta parte.Es solo para chequaear
+                    indice1++;
+                    if (indice1 == aux1.length) {
+                        limiteaux1 = true;
+                        cartaPrim=false;
+                    }
+                    if (indice1 % n1 == 0 || indice1 % n2 == 0) {
+                        cartaPrim = false;
+                    }
+
+                } else if ((cartaPrim == false && limiteaux2 == false) || (limiteaux1 == true && limiteaux2 == false)) {
+                    mazo[i] = aux2[indice2];
+//                    System.out.println("Aux2");con esta linea va viendo si entro carta de esta parte.Es solo para chequaear
+                    indice2++;
+                    if (indice2 %n1==0 || indice2%n2==0) {
+                        cartaPrim = true;
+                    }
+                    if (indice2 == aux2.length) {
+                        limiteaux2 = true;
+                        cartaPrim = true;
+                    }
+
+                }
+
+            }
+
+        }
     }
 
 }
