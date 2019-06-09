@@ -15,12 +15,8 @@ public class BlackJack {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Mazo m1=new Mazo();
-        m1.mesclarMazo1();
-        m1.mesclarMazo2();
-        for(int i=0;i<m1.mazo.length;i++){
-            m1.mazo[i].mostrarCarta();
-        }
+        Juego blackjack=new Juego();
+        
     }
     
 }

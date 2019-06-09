@@ -12,7 +12,6 @@ package blackjack;
 public class Carta {
 
     int valor;
-    int valor2; //caso especial para el as
     String nombre;
     int numero;
     int pinta;
@@ -254,7 +253,6 @@ public class Carta {
             case 1:
                 this.nombre = "As";
                 this.valor = 11;
-                this.valor2 = 1;
                 break;
             case 2:
                 this.valor = 2;

@@ -23,9 +23,32 @@ public class Mazo {
 //            mazo[i].mostrarCarta(); //linea para verificar que el mazo se creo en orden
         }
     }
+    
+    public void mezclaMazo(){
+        int m=(int) (Math.random() * (4 - 1 + 1) + 1);
+        switch(m){
+            case 1:
+                mezclarForma1();
+                mezclarForma2();
+                break;
+            case 2:
+                mezclarForma2();
+                mezclarForma1();
+                break;
+            case 3:
+                mezclarForma1();
+                mezclarForma1();
+                break;
+            default:
+                mezclarForma2();
+                mezclarForma2();
+                break;
+            
+        }
+    }
 
-    public void mesclarMazo1() { //intercalar 
-        int veces = (int) (Math.random() * (7 - 4 + 1) + 4); //El croupier va hacer de 4 a 7 veces este tipo de mezcla de cartas
+    public void mezclarForma1() { //intercalar 
+        int veces = (int) (Math.random() * (4 - 3 + 1) + 3); //El croupier va hacer de 3 a 4 veces este tipo de mezcla de cartas
 
         for (int v = 0; v < veces; v++) {
 
@@ -61,8 +84,8 @@ public class Mazo {
 
     }
 
-    public void mesclarMazo2() {//separar el mazo en dos partes por igual aproximadamente y ir soltando cartas de ambas partes
-        int veces = (int) (Math.random() * (7 - 4 + 1) + 4); //El croupier va hacer de 4 a 7 veces este tipo de mezcla de cartas
+    public void mezclarForma2() {//separar el mazo en dos partes por igual aproximadamente y ir soltando cartas de ambas partes
+        int veces = (int) (Math.random() * (4 - 3 + 1) + 3); //El croupier va hacer de 3 a 4 veces este tipo de mezcla de cartas
 
         for (int v = 0; v < veces; v++) {
             int k = (int) (Math.random() * (30 - 22 + 1) + 22); // k sera el numero por el que aproximadamente se dividira el mazo en dos partes
