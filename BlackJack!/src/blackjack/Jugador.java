@@ -16,7 +16,7 @@ public class Jugador {
     String nombre;
     String pasword;
     ArrayList<Carta> mano = new ArrayList();
-    int dinero;
+    int dinero=1000;
     int puntos = 0;
     int score = 0;
     int apuesta;
@@ -37,6 +37,7 @@ public class Jugador {
     }
 
     public int calcularPuntaje() {
+        puntos=0;
         for(int i=0;i<mano.size();i++){
             puntos+= mano.get(i).valor;
         }
@@ -52,5 +53,13 @@ public class Jugador {
         }
         return puntos;
       
+    }
+    public void descartarMano(ArrayList <Carta> cartas){
+        for(int i=mano.size()-1;i>=0;i--){
+            cartas.add(mano.get(i));
+        }
+        mano.clear();
+        
+        
     }
 }

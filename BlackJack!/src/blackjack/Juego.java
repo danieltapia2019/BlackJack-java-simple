@@ -20,7 +20,7 @@ public class Juego {
     public Jugador casa = new Jugador();
     public Carta[] cartas = new Carta[104];
     public boolean jugar = true;
-    public static int pos=0; //posicion de la carta sacada
+    public static int pos = 0; //posicion de la carta sacada
 
     public Juego() {
         prepararCartas();
@@ -57,22 +57,30 @@ public class Juego {
 
     private void iniciarJuego() {
         while (jugar) {
-             
+
             /*Se repartira desde esta carta hacia la primera.
 Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se reparten al jugador y a la casa*/
             System.out.println("Repartiendo Cartas\n-----------------------");
             System.out.println("Jugador:");
 
-            player.mano.add(cartas[pos]);
+            /*Siempre se reparten de entrada 2 cartas para el jugador y la casa:
+            -Carta -->jugador (boca arriba)
+            -Carta --> casa (boca arriba)
+            -Carta -->jugador (boca arriba)
+            -Carta --> casa (dada vuelta)
+             */
+            player.mano.add(cartas[pos]);//carta[98]--para Jugador
             pos--;
-            player.mano.add(cartas[pos]);
-            pos--;
+            player.mano.add(cartas[pos - 1]);//carta[96]--para Jugador
             player.mostrarMano();
             System.out.println("Puntaje: " + player.calcularPuntaje());
-            casa.mano.add(cartas[pos]);
+            casa.mano.add(cartas[pos]);//carta[97]--para Casa
             pos--;
-            casa.mano.add(cartas[pos]);
-            pos--;
+            casa.mano.add(cartas[pos - 1]);//carta[95]--para Casa
+            pos = pos - 2;//el mazo que en la carta[94] para seguir repartiendo en caso de ser necesario
+            /*Luego al iniciar otra mano la posicion de la carta a sacar obviamente cambió pero se
+            sigue manteniendo la relacion de una y una para cada una
+             */
 
             if (player.puntos < 21) {
 
@@ -94,8 +102,7 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
                     }
                 }
 
-            }
-            if (player.puntos == 21) {
+            } else if (player.puntos == 21) {
                 player.bJ = true;
                 System.out.println("-->JUGADOR GANA : BLACKJACK!!");
             }
@@ -123,33 +130,30 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
                         }
                     }
 
-                }
-                else if(casa.puntos>17 && casa.puntos!=21){
-                     System.out.println("La casa se queda");
-                }
-                else if(casa.puntos==21){
+                } else if (casa.puntos >= 17 && casa.puntos < 21) {
+                    System.out.println("La casa se queda");
+                } else if (casa.puntos == 21) {
                     System.out.println("-->LA CASA GANA : BLACKJACK!!");;
                 }
-                    
-                }
-            char opcion='a';
-            try{
-             opcion =JOptionPane.showInputDialog("Jugar otra Mano: Yes(y)/No(n)").toLowerCase().charAt(0);
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"Aun no se ha ingresado una opcion");}
-            if(opcion=='y'){
-                player.pedirCarta=true;
-                casa.pedirCarta=false;
-                player.puntos=0;
-                casa.puntos=0;
-                player.mano.clear();
-                casa.mano.clear();
-            }
-            else
-                jugar=false;
-            
 
-            
             }
+
+            player.descartarMano(descarte);
+            casa.descartarMano(descarte);
+            char opcion = 'a';
+            try {
+                opcion = JOptionPane.showInputDialog("Jugar otra Mano: Yes(y)/No(n)").toLowerCase().charAt(0);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Aun no se ha ingresado una opcion");
+            }
+            if (opcion == 'y') {
+                player.pedirCarta = true;
+                casa.pedirCarta = true;
+                
+            } else {
+                jugar = false;
+            }
+
         }
     }
+}
