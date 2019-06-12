@@ -16,9 +16,10 @@ public class BlackJack {
      */
     public static void main(String[] args) {
         Juego blackjack=new Juego();
-        for(int i=0;i<blackjack.descarte.size();i++){
-            blackjack.descarte.get(i).mostrarCarta();
-        }
+        
+//        for(int i=0;i<blackjack.descarte.size();i++){
+//            blackjack.descarte.get(i).mostrarCarta();
+//        }
 
 
        

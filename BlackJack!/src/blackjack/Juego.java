@@ -18,7 +18,8 @@ public class Juego {
 
     public Jugador player = new Jugador();
     public Jugador casa = new Jugador();
-    public Carta[] cartas = new Carta[104];
+    public Carta[] cartas = new Carta[104]; //aun falta establecer el punto de corte 
+    //que sera el que nos indique cuando las cartas se acaben y se requiera volver a mezclar y cortar
     public boolean jugar = true;
     public static int pos = 0; //posicion de la carta sacada
 
@@ -98,6 +99,7 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
                         if (player.puntos > 21) {
                             player.pedirCarta = false;
                             System.out.println("¡PERDISTE TE PASASTE!");
+                            JOptionPane.showMessageDialog(null,"¡¡¡La Casa gana!!!");
                         }
                     }
                 }
@@ -126,6 +128,7 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
                         } else if (casa.puntos > 21) {
                             casa.pedirCarta = false;
                             System.out.println("La casa pierde!!!");
+                            JOptionPane.showMessageDialog(null,"¡¡¡Jugador Gana!!!");
 
                         }
                     }
@@ -133,22 +136,41 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
                 } else if (casa.puntos >= 17 && casa.puntos < 21) {
                     System.out.println("La casa se queda");
                 } else if (casa.puntos == 21) {
-                    System.out.println("-->LA CASA GANA : BLACKJACK!!");;
+                    System.out.println("-->LA CASA GANA : BLACKJACK!!");
+                    JOptionPane.showMessageDialog(null,"¡¡¡La Casa gana!!!");
                 }
 
+            }
+            if(player.puntos<=21 && player.bJ==false && casa.puntos>=17 && casa.puntos<=21 && casa.bJ==false){
+                if(player.puntos==casa.puntos){
+                    JOptionPane.showMessageDialog(null,"Empate");
+                }
+                else if(player.puntos>casa.puntos){
+                    JOptionPane.showMessageDialog(null,"¡¡¡Jugador Gana!!!");
+                }
+                else
+                    JOptionPane.showMessageDialog(null,"¡¡¡La Casa gana!!!");
+                
             }
 
             player.descartarMano(descarte);
             casa.descartarMano(descarte);
             char opcion = 'a';
+            while(opcion!='y' && opcion!='n'){
             try {
                 opcion = JOptionPane.showInputDialog("Jugar otra Mano: Yes(y)/No(n)").toLowerCase().charAt(0);
+                if(opcion!='y' && opcion!='n'){
+                     JOptionPane.showMessageDialog(null, "Aun no se ha ingresado una opcion correcta");
+                }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Aun no se ha ingresado una opcion");
-            }
+                JOptionPane.showMessageDialog(null, "Aun no se ha ingresado una opcion correcta");
+            }}
             if (opcion == 'y') {
                 player.pedirCarta = true;
                 casa.pedirCarta = true;
+                player.bJ=false;
+                casa.bJ=false;
+                
                 
             } else {
                 jugar = false;
