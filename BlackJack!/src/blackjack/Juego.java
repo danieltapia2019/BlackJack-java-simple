@@ -5,6 +5,7 @@
  */
 package blackjack;
 
+
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -13,6 +14,7 @@ import javax.swing.JOptionPane;
  * @author DanielTapia
  */
 public class Juego {
+    
 
     public ArrayList<Carta> descarte = new ArrayList();
 
@@ -26,7 +28,13 @@ public class Juego {
     public Juego() {
         prepararCartas();
         iniciarJuego();
+        
 
+    }
+    public Juego(Jugador player){
+        this.player=player;
+        prepararCartas();
+        iniciarJuego();
     }
 
     private void prepararCartas() {
@@ -82,6 +90,7 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
             /*Luego al iniciar otra mano la posicion de la carta a sacar obviamente cambió pero se
             sigue manteniendo la relacion de una y una para cada una
              */
+            
 
             if (player.puntos < 21) {
 
@@ -179,3 +188,4 @@ Recordar que se descartaron 5 al iniciar el juego mas las 2 que siempre se repar
         }
     }
 }
+   
