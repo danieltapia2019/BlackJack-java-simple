@@ -7,6 +7,7 @@ package graficos;
 
 import Stream.Stream;
 import blackjack.Juego;
+import blackjack.JuegoBeta;
 import java.io.Serializable;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,10 +24,10 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
     public static final int ALTO = 480;
     public static boolean p1 = true;//condicion para saber cual panel cargar
 
-    JLabel Titulo;
-    PanelInicio panelInicio = new PanelInicio(this);
-    PanelJuego panelJuego = new PanelJuego(this);
-    Juego blackjack;
+    public JLabel Titulo;
+    public   PanelInicio panelInicio = new PanelInicio(this);
+    public PanelJuego panelJuego = new PanelJuego(this);
+    public JuegoBeta blackjack;
 //    JPanel panelJuego=new PanelJuego();
 
     public VentanaPrincipal() {
@@ -41,8 +42,9 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
         }
 
     }
-    public VentanaPrincipal(Juego black){
+    public VentanaPrincipal(JuegoBeta black){
         this.blackjack=black;
+        
         iniciarComponentes();
     }
 

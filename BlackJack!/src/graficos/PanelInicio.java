@@ -7,7 +7,9 @@ package graficos;
 
 import Stream.Stream;
 import blackjack.Juego;
+import blackjack.JuegoBeta;
 import blackjack.Jugador;
+import controlador.Controlador;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,7 +104,8 @@ public class PanelInicio extends JPanel implements Serializable {
             public void actionPerformed(ActionEvent e) {
                 VentanaPrincipal.p1 = false;
                 ventanaPadre.dispose();
-                VentanaPrincipal v = new VentanaPrincipal(new Juego());
+                Controlador c=new Controlador(new VentanaPrincipal(new JuegoBeta()));
+//                VentanaPrincipal v = new VentanaPrincipal(new JuegoBeta());
 
 //             
 //                ventanaPadre.getContentPane().add(ventanaPadre.panelJuego);
@@ -155,7 +158,7 @@ public class PanelInicio extends JPanel implements Serializable {
                     
                     VentanaPrincipal.p1 = false;
                     ventanaPadre.dispose();
-                    VentanaPrincipal v = new VentanaPrincipal(new Juego(Stream.playerIngresado(usuario.getText())));
+                    VentanaPrincipal v = new VentanaPrincipal(new JuegoBeta(Stream.playerIngresado(usuario.getText())));
                     JOptionPane.showMessageDialog(null, "Hola " + Stream.playerIngresado(usuario.getText()).nombre + " ¿Listo para jugar?");
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario inexistente o contraseña incorrecta");
@@ -212,7 +215,7 @@ public class PanelInicio extends JPanel implements Serializable {
                         Jugador j1 = new Jugador(usuario.getText(), contraseña.getText());
                         VentanaPrincipal.p1 = false;
                         ventanaPadre.dispose();
-                        VentanaPrincipal v = new VentanaPrincipal(new Juego(j1));
+                        VentanaPrincipal v = new VentanaPrincipal(new JuegoBeta(j1));
 
                     }
 

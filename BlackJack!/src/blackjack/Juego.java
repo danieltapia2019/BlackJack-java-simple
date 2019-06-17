@@ -21,7 +21,7 @@ public class Juego {
     public Jugador player = new Jugador();
     public Jugador casa = new Jugador();
     public Carta[] cartas = new Carta[104]; //aun falta establecer el punto de corte 
-    //que sera el que nos indique cuando las cartas se acaben y se requiera volver a mezclar y cortar
+    public int corte;//que sera el que nos indique cuando las cartas se acaben y se requiera volver a mezclar y cortar
     public boolean jugar = true;
     public static int pos = 0; //posicion de la carta sacada
 
@@ -49,6 +49,7 @@ public class Juego {
                 cartas[i] = m2.mazo[i - 52];
             }
         }
+        corte=(int) (Math.random() * (80 - 60 + 1) + 60);
         //se genera el mazo total con el que se va jugar que son dos mazos ya mezclados.
         descarte.add(cartas[103]);
         descarte.add(cartas[102]);

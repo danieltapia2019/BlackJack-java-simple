@@ -20,6 +20,8 @@ import javax.swing.JTextArea;
  * @author DanielTapia
  */
 public class PanelJuego extends JPanel {
+    public  JPanel cartasJug;
+    public  JPanel cartasCasa;
 
     public JLabel imagenFondo;
     public JLabel quienGana;
@@ -57,6 +59,12 @@ public class PanelJuego extends JPanel {
         aumentar = new JButton("+50");
         restar = new JButton("-50");
         info = new JTextArea();
+        cartasJug=new JPanel();
+        cartasCasa=new JPanel();
+        cartasJug.setBounds(200,200,350,50);
+        cartasCasa.setBounds(200,100,350,50);
+        cartasCasa.setLayout(null);
+        cartasJug.setLayout(null);
 
         quedarse.setBounds(VentanaPrincipal.ANCHO - 310, VentanaPrincipal.ALTO - 90, 100, 20);
         pedir.setBounds(VentanaPrincipal.ANCHO - 210, VentanaPrincipal.ALTO - 90, 100, 20);
@@ -76,6 +84,12 @@ public class PanelJuego extends JPanel {
         info.setOpaque(true);
         info.setBackground(Color.green);
         info.setOpaque(true);
+        quedarse.setEnabled(false);
+        pedir.setEnabled(false);
+        doblar.setEnabled(false);
+        jugar.setEnabled(false);
+        abrir.setEnabled(false);
+        asegurar.setEnabled(false);
 
         add(quedarse);
         add(pedir);
@@ -88,6 +102,8 @@ public class PanelJuego extends JPanel {
         add(aumentar);
         add(restar);
         add(info);
+        add(cartasJug);
+        add(cartasCasa);
         
          salir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

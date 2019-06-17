@@ -11,10 +11,10 @@ package blackjack;
  */
 public class Carta {
 
-    int valor;
-    String nombre;
-    int numero;
-    int pinta;
+    public int valor;
+    public   String nombre;
+    public int numero;
+    public  int pinta;
 
     public Carta() {
     }
@@ -255,30 +255,39 @@ public class Carta {
                 this.valor = 11;
                 break;
             case 2:
+                this.nombre="2";
                 this.valor = 2;
                 break;
             case 3:
+                this.nombre="3";
                 this.valor = 3;
                 break;
             case 4:
+                this.nombre="4";
                 this.valor = 4;
                 break;
             case 5:
+                this.nombre="5";
                 this.valor = 5;
                 break;
             case 6:
+                this.nombre="6";
                 this.valor = 6;
                 break;
             case 7:
+                this.nombre="7";
                 this.valor = 7;
                 break;
             case 8:
+                this.nombre="8";
                 this.valor = 8;
                 break;
             case 9:
+                this.nombre="9";
                 this.valor = 9;
                 break;
             case 10:
+                this.nombre="10";
                 this.valor = 10;
                 break;
             case 11:
