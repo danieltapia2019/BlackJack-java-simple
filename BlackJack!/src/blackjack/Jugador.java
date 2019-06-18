@@ -22,7 +22,7 @@ public class Jugador implements Serializable {
     public int puntos = 0;
     public int score = 0;
     public int apuesta = 0;
-    public int total=apuesta;
+    public int total=0;
     public boolean pedirCarta = true;
     public boolean bJ = false; //indica si hay blackjack o no
 

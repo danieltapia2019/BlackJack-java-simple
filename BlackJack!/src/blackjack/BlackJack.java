@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author DanielTapia
+ * @author DanielTapia                                
  */
 public class BlackJack implements Serializable{
 
@@ -19,12 +19,16 @@ public class BlackJack implements Serializable{
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        VentanaPrincipal v1=new VentanaPrincipal();
-        Juego blackjack = new Juego();
+        VentanaPrincipal v1=new VentanaPrincipal();//version beta definitiva, resta implementar variantes:doblar,abrir y asegurar.
+//registrese para poder jugar el juego. Pronto se implementara un bonus de dinero que se da cuando el player se queda sin plata
+//para que sus datos se guarden salga correctamente por el boton salir de lo contrario no se guardaran los datos.
+
+//        Juego blackjack = new Juego(); 
+/*primera version de la clase del juego , toda por salida a consola,la definitiva sera
+la clasebeta que ya trabaja directamente con la interfaz
+*/
         
-//        for(int i=0;i<blackjack.descarte.size();i++){
-//            blackjack.descarte.get(i).mostrarCarta();
-//        }
+
 
     }
 

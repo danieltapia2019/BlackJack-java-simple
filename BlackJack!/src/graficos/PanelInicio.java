@@ -45,7 +45,7 @@ public class PanelInicio extends JPanel implements Serializable {
 
     private void iniciarComponentes() {
         setLayout(null);
-        cargarPaneles();
+        cargarPaneles(); //cargamos los componentes de cada panel
         setSize(VentanaPrincipal.ANCHO, VentanaPrincipal.ALTO);
         setLayout(null);
         titulo = new JLabel();
@@ -119,13 +119,13 @@ public class PanelInicio extends JPanel implements Serializable {
         dos = new JPanel();
         dos.setLayout(null);
         dos.setBackground(Color.GRAY);
+        dos.setSize(200, 200);
         JButton listo = new JButton("Listo");
         JButton atras = new JButton("Atras");
         JLabel texto1 = new JLabel("Usuario:");
         JLabel texto2 = new JLabel("Contraseña:");
         JPasswordField contraseña = new JPasswordField();
-        JTextField usuario = new JTextField();
-        uno.setSize(200, 200);
+        JTextField usuario = new JTextField();       
         texto1.setBounds(70, 5, 80, 20);
         usuario.setBounds(40, 35, 120, 20);
         texto2.setBounds(60, 70, 80, 20);
@@ -158,8 +158,10 @@ public class PanelInicio extends JPanel implements Serializable {
                     
                     VentanaPrincipal.p1 = false;
                     ventanaPadre.dispose();
-                    VentanaPrincipal v = new VentanaPrincipal(new JuegoBeta(Stream.playerIngresado(usuario.getText())));
-                    JOptionPane.showMessageDialog(null, "Hola " + Stream.playerIngresado(usuario.getText()).nombre + " ¿Listo para jugar?");
+                    Controlador c=new Controlador(new VentanaPrincipal(new JuegoBeta(Stream.playerIngresado(usuario.getText()))));
+                    
+                    
+                    JOptionPane.showMessageDialog(null, "Hola " + Stream.playerIngresado(usuario.getText()).nombre + " ¿Listo/a para jugar?");
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario inexistente o contraseña incorrecta");
                 }
@@ -172,13 +174,13 @@ public class PanelInicio extends JPanel implements Serializable {
         tres = new JPanel();
         tres.setLayout(null);
         tres.setBackground(Color.GRAY);
+        tres.setSize(200, 200);
         JButton registrar = new JButton("Registrar");
         JButton atras = new JButton("Atras");
         JLabel texto1 = new JLabel("Usuario:");
         JLabel texto2 = new JLabel("Contraseña:");
         JPasswordField contraseña = new JPasswordField();
         JTextField usuario = new JTextField();
-        uno.setSize(200, 200);
         texto1.setBounds(70, 5, 80, 20);
         usuario.setBounds(40, 35, 120, 20);
         texto2.setBounds(60, 70, 80, 20);
@@ -215,7 +217,7 @@ public class PanelInicio extends JPanel implements Serializable {
                         Jugador j1 = new Jugador(usuario.getText(), contraseña.getText());
                         VentanaPrincipal.p1 = false;
                         ventanaPadre.dispose();
-                        VentanaPrincipal v = new VentanaPrincipal(new JuegoBeta(j1));
+                        Controlador c=new Controlador(new VentanaPrincipal(new JuegoBeta(j1)));
 
                     }
 

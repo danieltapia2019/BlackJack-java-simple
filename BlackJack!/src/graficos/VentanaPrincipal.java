@@ -9,6 +9,7 @@ import Stream.Stream;
 import blackjack.Juego;
 import blackjack.JuegoBeta;
 import java.io.Serializable;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,6 +29,7 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
     public   PanelInicio panelInicio = new PanelInicio(this);
     public PanelJuego panelJuego = new PanelJuego(this);
     public JuegoBeta blackjack;
+    public static final ImageIcon icono = new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/IconoJuego.png"));
 //    JPanel panelJuego=new PanelJuego();
 
     public VentanaPrincipal() {
@@ -36,6 +38,10 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
 
         try {
             Stream.cargarDatos();
+            for(int i=0;i<Stream.jugadores.size();i++){
+                System.out.println(Stream.jugadores.get(i).nombre+"----"+Stream.jugadores.get(i).password);
+            }
+            
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al cargar los datos.");
@@ -44,7 +50,6 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
     }
     public VentanaPrincipal(JuegoBeta black){
         this.blackjack=black;
-        
         iniciarComponentes();
     }
 
@@ -52,6 +57,7 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
         setTitle("BlackJack");
         setLayout(null);
         setSize(ANCHO, ALTO);
+        setIconImage(icono.getImage());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         if (p1) {

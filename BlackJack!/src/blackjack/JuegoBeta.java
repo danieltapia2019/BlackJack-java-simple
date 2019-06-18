@@ -9,26 +9,28 @@ import static blackjack.Juego.pos;
 import controlador.Controlador;
 import static controlador.Controlador.vista;
 import graficos.VentanaPrincipal;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author DanielTapia
  */
-public class JuegoBeta extends Thread {
+public class JuegoBeta extends Thread implements Serializable {
 
     public boolean primeraMano = false;
 
+    public ArrayList<Carta> descarte = new ArrayList(); //mazo de descarte
 
-
-    public ArrayList<Carta> descarte = new ArrayList();
-
-    public Jugador player = new Jugador();
+    public Jugador player;
     public Jugador casa = new Jugador();
-    public Carta[] cartas = new Carta[104]; //aun falta establecer el punto de corte 
-    //que sera el que nos indique cuando las cartas se acaben y se requiera volver a mezclar y cortar
+
+    public Carta[] cartas = new Carta[104]; //mazo total del juego esta compuesto por dos mazos
+    public int corte;
+    public boolean corteAlcanzado = false;
     public boolean jugar = false;
     public boolean pedir = false;
     public boolean quedarse = false;
@@ -40,6 +42,7 @@ public class JuegoBeta extends Thread {
     public static int pos = 0; //posicion de la carta sacada
 
     public JuegoBeta() {
+        player = new Jugador();
         prepararCartas();
 
     }
@@ -50,10 +53,13 @@ public class JuegoBeta extends Thread {
     }
 
     private void prepararCartas() {
+        //se jugara con dos mazos
         Mazo m1 = new Mazo();
         Mazo m2 = new Mazo();
+        // se crean los mazos y ahora los mezclamos
         m1.mezclaMazo();
         m2.mezclaMazo();
+        //una vez mezclados solo se colocan uno tras el otro conformando asi el mazo total de juego
         for (int i = 0; i < cartas.length; i++) {
             if (i < 52) {
                 cartas[i] = m1.mazo[i];
@@ -61,26 +67,96 @@ public class JuegoBeta extends Thread {
                 cartas[i] = m2.mazo[i - 52];
             }
         }
-        //se genera el mazo total con el que se va jugar que son dos mazos ya mezclados.
+        corte=(int) (Math.random() * (20 - 10 + 1) + 10);
+        
+        //una vez preparado el mazo total se elije un punto de corte que es el que va indicar cuando las cartas
+        //se esten por acabar y entonces se procedera a mezclar todas las cartas de nuevo.
+        //se descartan las primeras 5 cartas , esta es una regla opcional, en algunos casinos se hace en otros no
         descarte.add(cartas[103]);
         descarte.add(cartas[102]);
         descarte.add(cartas[101]);
         descarte.add(cartas[100]);
         descarte.add(cartas[99]);
+        //ya queda lista la posicion de la carta con la que se comenzara a repartir a los jugadores
         pos = 98;
-        //Se descartan las primeras 5 cartas
-        //Recordar que el mazo se coloca boca abajo y se va descartando (asi como tambien se reparte) desde arriba
 
+        //Recordar que el mazo se coloca boca abajo y se va descartando (asi como tambien se reparte) desde arriba
 //        for (Carta carta : cartas) {
 //            carta.mostrarCarta();
 //        }
     }
 
+    public void rearmarMazo() {
+        JOptionPane.showMessageDialog(null, "El mazo alcanzo el punto de corte. A continuacion se mezclaran las cartas de nuevo");
+        //se terminan de descartar las cartas que quedan del mazo de juego
+        for (int i = 0; i < pos+1; i++) {
+            descarte.add(cartas[i]);
+        }
+        System.out.println(descarte.size());
+        //Una vez completo el mazo de descarte con 104 cartas queda el mazo de juego vacio
+        //luego el croupier tratara de dividir el mazo total de descarte en dos partes iguales aproximadamente
+        int k = (int) (Math.random() * (60 - 50 + 1) + 50);
+        //se almacenan las cartas en arreglos auxiliares que representan las dos partes divididas
+
+        Carta[] aux1 = new Carta[k];
+        
+        Carta[] aux2 = new Carta[descarte.size() - k];
+       
+        for (int i = 0; i < descarte.size(); i++) {
+            if (i < k) {
+                aux1[i] = descarte.get(i);
+            } else {
+                aux2[i - k] = descarte.get(i);
+            }
+
+        }
+        System.out.println("aux 1: "+aux1.length);
+         System.out.println("aux 2: "+aux2.length);
+        
+        descarte.clear();
+        //luego se mezcla cada parte como si fuera un mazo comun
+        Mazo.mezclaMazoAux(aux1);
+        Mazo.mezclaMazoAux(aux2);
+        //Una vez mezclados se colocan uno tras el otro conformando nuevamente el mazo total de juego
+        for (int i = 0; i < cartas.length; i++) {
+            if (i < k) {
+                cartas[i] = aux1[i];
+                if(cartas[i].valor==1){
+                    cartas[i].valor=11; // vuelve al valor original 11 todos los ases
+                }
+            } else {
+                cartas[i] = aux2[i - k];
+                if(cartas[i].valor==1){
+                    cartas[i].valor=11; // vuelve al valor original 11 todos los ases
+                }
+                
+            }
+        }
+        System.out.println("Mazo de cartas nuevo: "+cartas.length);
+        //se elige un punto de corte nuevamente y se descartan las 5 cartas de arriba otra vez y listos a seguir jugando
+       corte = (int) (Math.random() * (20 - 10 + 1) + 10);
+        
+        descarte.add(cartas[103]);
+        descarte.add(cartas[102]);
+        descarte.add(cartas[101]);
+        descarte.add(cartas[100]);
+        descarte.add(cartas[99]);
+        System.out.println("descarte: "+descarte.size());
+        //ya queda lista la posicion de la carta con la que se comenzara a repartir a los jugadores
+        pos = 98;
+        
+
+    }
+
     public void repartirCartas() {
+        if (corteAlcanzado==true) {
+            rearmarMazo();
+            corteAlcanzado=false;
+        }
         player.mano.add(cartas[pos]);//carta[98]--para Jugador
         pos--;
         player.mano.add(cartas[pos - 1]);//carta[96]--para Jugador
-      
+
         casa.mano.add(cartas[pos]);//carta[97]--para Casa
         pos--;
         casa.mano.add(cartas[pos - 1]);//carta[95]--para Casa
@@ -126,19 +202,18 @@ public class JuegoBeta extends Thread {
                 quienGana = 2;
             }
             casaLista = true;
-            jugListo=true;
-            
+            jugListo = true;
+
         } else if (casa.calcularPuntaje() >= 17 && casa.calcularPuntaje() <= 21 && casa.bJ == false) {
             casa.pedirCarta = false;
             casaLista = true;
             jugListo = true;
-            
+
         } else {
             casa.pedirCarta = false;
             casaLista = true;
             jugListo = true;
-            quienGana=1;
-            
+            quienGana = 1;
 
         }
 
@@ -156,25 +231,46 @@ public class JuegoBeta extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(JuegoBeta.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (corteAlcanzado == false) {
+                if (pos <= corte) {
+                    corteAlcanzado = true;
+                }
+            }
             if (player.apuesta > 0 && jugar == false) {
                 vista.panelJuego.jugar.setEnabled(true);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             } else {
                 vista.panelJuego.jugar.setEnabled(false);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             }
             if (quedarse) {
                 vista.panelJuego.quedarse.setEnabled(true);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             } else {
                 vista.panelJuego.quedarse.setEnabled(false);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             }
             if (pedir) {
                 vista.panelJuego.pedir.setEnabled(true);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             } else {
-               vista.panelJuego.pedir.setEnabled(false);
+                vista.panelJuego.pedir.setEnabled(false);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             }
             if (doblar) {
                 vista.panelJuego.doblar.setEnabled(true);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             } else {
                 vista.panelJuego.doblar.setEnabled(false);
+                vista.panelJuego.revalidate();
+                vista.panelJuego.repaint();
             }
             if (jugListo && casaLista == false) {
                 jugListo = false;
@@ -202,13 +298,13 @@ public class JuegoBeta extends Thread {
             case 1:
 
                 if (player.bJ) {
-                    player.dinero += player.apuesta + (player.apuesta * 1.5);
+                    player.dinero += player.apuesta + (player.apuesta * 0.5);
                     vista.panelJuego.quienGana.setText("Jugador Gana: BLACKJACK");
                 } else {
-                    player.dinero += player.apuesta * 2;
+                    player.dinero += player.apuesta;
                     vista.panelJuego.quienGana.setText("Jugador Gana");
                 }
-                player.apuesta = 0;
+                
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
                 break;
@@ -218,19 +314,20 @@ public class JuegoBeta extends Thread {
                 } else {
                     vista.panelJuego.quienGana.setText("La Casa Gana");
                 }
+                player.apuesta=0;
 
-                player.apuesta = 0;
+                
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
                 break;
             case 3:
                 vista.panelJuego.quienGana.setText("Empate");
 
-                player.dinero += player.apuesta;
-                player.apuesta = 0;
+                
+               
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
-                
+
                 break;
         }
         primeraMano = true;

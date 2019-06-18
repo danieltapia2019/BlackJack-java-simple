@@ -9,6 +9,7 @@ import Stream.Stream;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,9 +20,10 @@ import javax.swing.JTextArea;
  *
  * @author DanielTapia
  */
-public class PanelJuego extends JPanel {
-    public  JPanel cartasJug;
-    public  JPanel cartasCasa;
+public class PanelJuego extends JPanel implements Serializable{
+
+    public JPanel cartasJug;
+    public JPanel cartasCasa;
 
     public JLabel imagenFondo;
     public JLabel quienGana;
@@ -59,10 +61,10 @@ public class PanelJuego extends JPanel {
         aumentar = new JButton("+50");
         restar = new JButton("-50");
         info = new JTextArea();
-        cartasJug=new JPanel();
-        cartasCasa=new JPanel();
-        cartasJug.setBounds(200,200,350,50);
-        cartasCasa.setBounds(200,100,350,50);
+        cartasJug = new JPanel();
+        cartasCasa = new JPanel();
+        cartasJug.setBounds(200, 200, 350, 50);
+        cartasCasa.setBounds(200, 100, 350, 50);
         cartasCasa.setLayout(null);
         cartasJug.setLayout(null);
 
@@ -104,24 +106,8 @@ public class PanelJuego extends JPanel {
         add(info);
         add(cartasJug);
         add(cartasCasa);
+
         
-         salir.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String[] opciones = {"Si", "No"};
-    
-               int seleccion = JOptionPane.showOptionDialog(null, "¿Está seguro de que desea salir?", "Alerta", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-                    if (seleccion == 0) {
-                        try{
-                            Stream.guardarDatos(Stream.jugadores);
-                        }catch(Exception ex){
-                            System.out.println("Error");
-                        }
-                        VentanaPrincipal.p1=true;
-                        ventanaPadre.dispose();
-                        VentanaPrincipal v=new VentanaPrincipal();
-                    }
-            }
-        });
 
     }
 }

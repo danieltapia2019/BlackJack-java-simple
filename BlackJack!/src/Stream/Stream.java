@@ -24,7 +24,7 @@ public class Stream implements Serializable {
 
     public static ArrayList<Jugador> jugadores = new ArrayList();
 
-    public static void guardarDatos(ArrayList<Jugador> dato) throws FileNotFoundException, IOException {
+    public static void guardarDatos() throws FileNotFoundException, IOException {
         try {
             ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Data.txt"));
             System.out.println("se guardó un objeto compuesto\n");

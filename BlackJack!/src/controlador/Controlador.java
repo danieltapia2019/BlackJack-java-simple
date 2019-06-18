@@ -11,18 +11,18 @@ import graficos.VentanaPrincipal;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  *
  * @author DanielTapia
  */
-public class Controlador {
+public class Controlador implements Serializable {
 
     static int posUltimaCartaJug = 100;
     static JLabel puntajeJug;
@@ -36,10 +36,38 @@ public class Controlador {
     public static JuegoBeta juego;
     public static boolean jugar = false;
 
-    public Controlador(VentanaPrincipal vista) {
-        this.vista = vista;
-        this.juego = vista.blackjack;
+    public Controlador(VentanaPrincipal vistaa) {
+        vista = vistaa;
+        juego = vista.blackjack;
         vista.panelJuego.info.setText(obtenerInfo());
+
+        vista.panelJuego.salir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (Stream.jugadores.get(0) == juego.player) {
+                    System.out.println("Apuntan al mismo objeto");
+                }
+
+                String[] opciones = {"Si", "No"};
+
+                int seleccion = JOptionPane.showOptionDialog(null, "¿Está seguro de que desea salir?", "Alerta", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                if (seleccion == 0) {
+                    posUltimaCartaJug = 100;
+
+                    juego.player.mano.clear();
+                    juego.player.bJ = false;
+                    VentanaPrincipal.p1 = true;
+                    try {
+                        Stream.guardarDatos();
+                    } catch (Exception ex) {
+                        System.out.println("Error");
+                    }
+                    Stream.jugadores.clear();
+                    juego.stop();
+                    vista.dispose();
+                    VentanaPrincipal v = new VentanaPrincipal();
+                }
+            }
+        });
 
 //        
         vista.panelJuego.aumentar.addActionListener(new ActionListener() {
@@ -66,9 +94,10 @@ public class Controlador {
             public void actionPerformed(ActionEvent e) {
                 if (juego.primeraMano) {
                     restart();
-                    
+
                 }
-              
+                vista.panelJuego.aumentar.setEnabled(false);
+                vista.panelJuego.restar.setEnabled(false);
 
                 pintarCartas();
                 juego.chequearMano();
@@ -221,12 +250,12 @@ public class Controlador {
         }
         vista.panelJuego.revalidate();
         vista.panelJuego.repaint();
-        
+
         juego.player.descartarMano(juego.descarte);
         juego.casa.descartarMano(juego.descarte);
-        juego.player.bJ=false;
-        juego.casa.bJ=false;
-       
+        juego.player.bJ = false;
+        juego.casa.bJ = false;
+
     }
 
 }
