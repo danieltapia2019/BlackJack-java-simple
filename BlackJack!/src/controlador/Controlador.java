@@ -72,10 +72,10 @@ public class Controlador implements Serializable {
 //        
         vista.panelJuego.aumentar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (juego.player.dinero >= 50) {
+                if (juego.player.dinero >= 50 && juego.player.apuesta<juego.player.dinero) {
                     juego.player.apuesta += 50;
-                    juego.player.dinero -= 50;
-                    vista.panelJuego.info.setText(obtenerInfo());
+                    
+                    
                 }
 
             }
@@ -84,8 +84,8 @@ public class Controlador implements Serializable {
             public void actionPerformed(ActionEvent e) {
                 if (juego.player.apuesta >= 50) {
                     juego.player.apuesta -= 50;
-                    juego.player.dinero += 50;
-                    vista.panelJuego.info.setText(obtenerInfo());
+                    
+                    
                 }
 
             }
@@ -96,18 +96,21 @@ public class Controlador implements Serializable {
                     restart();
 
                 }
+                juego.player.dinero-=juego.player.apuesta;
+                juego.player.total+=juego.player.apuesta;
                 vista.panelJuego.aumentar.setEnabled(false);
                 vista.panelJuego.restar.setEnabled(false);
 
                 pintarCartas();
                 juego.chequearMano();
                 juego.jugar = true;
-                vista.panelJuego.jugar.setEnabled(false);
+               
 
             }
         });
         vista.panelJuego.pedir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                juego.doblar=false;
 
                 juego.repartirUna(juego.player);
                 pintarUltima();
@@ -117,7 +120,24 @@ public class Controlador implements Serializable {
         });
         vista.panelJuego.quedarse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
                 juego.jugListo = true;
+                juego.pedir = false;
+                juego.quedarse = false;
+                juego.doblar=false;
+
+            }
+        });
+        vista.panelJuego.doblar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                juego.juegoDoblado=true;
+                juego.repartirUna(juego.player);
+                pintarUltima();
+                juego.player.dinero-=juego.player.apuesta;
+                juego.player.total+=juego.player.apuesta;
+               
+                juego.jugListo = true;
+                juego.doblar=false;
                 juego.pedir = false;
                 juego.quedarse = false;
 

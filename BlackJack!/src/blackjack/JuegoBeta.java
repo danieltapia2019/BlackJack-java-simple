@@ -7,6 +7,7 @@ package blackjack;
 
 import static blackjack.Juego.pos;
 import controlador.Controlador;
+import static controlador.Controlador.obtenerInfo;
 import static controlador.Controlador.vista;
 import graficos.VentanaPrincipal;
 import java.io.Serializable;
@@ -38,6 +39,8 @@ public class JuegoBeta extends Thread implements Serializable {
     public boolean doblar = false;
     public boolean jugListo = false;
     public boolean casaLista = false;
+    public boolean juegoDoblado = false;
+    public boolean juegoAsegurado = false;
     public int quienGana = 0; // tres posibles valores... 1:gana jugador,2:gana casa,3:empate;
     public static int pos = 0; //posicion de la carta sacada
 
@@ -67,8 +70,8 @@ public class JuegoBeta extends Thread implements Serializable {
                 cartas[i] = m2.mazo[i - 52];
             }
         }
-        corte=(int) (Math.random() * (20 - 10 + 1) + 10);
-        
+        corte = (int) (Math.random() * (20 - 10 + 1) + 10);
+
         //una vez preparado el mazo total se elije un punto de corte que es el que va indicar cuando las cartas
         //se esten por acabar y entonces se procedera a mezclar todas las cartas de nuevo.
         //se descartan las primeras 5 cartas , esta es una regla opcional, en algunos casinos se hace en otros no
@@ -89,7 +92,7 @@ public class JuegoBeta extends Thread implements Serializable {
     public void rearmarMazo() {
         JOptionPane.showMessageDialog(null, "El mazo alcanzo el punto de corte. A continuacion se mezclaran las cartas de nuevo");
         //se terminan de descartar las cartas que quedan del mazo de juego
-        for (int i = 0; i < pos+1; i++) {
+        for (int i = 0; i < pos + 1; i++) {
             descarte.add(cartas[i]);
         }
         System.out.println(descarte.size());
@@ -99,9 +102,9 @@ public class JuegoBeta extends Thread implements Serializable {
         //se almacenan las cartas en arreglos auxiliares que representan las dos partes divididas
 
         Carta[] aux1 = new Carta[k];
-        
+
         Carta[] aux2 = new Carta[descarte.size() - k];
-       
+
         for (int i = 0; i < descarte.size(); i++) {
             if (i < k) {
                 aux1[i] = descarte.get(i);
@@ -110,9 +113,9 @@ public class JuegoBeta extends Thread implements Serializable {
             }
 
         }
-        System.out.println("aux 1: "+aux1.length);
-         System.out.println("aux 2: "+aux2.length);
-        
+        System.out.println("aux 1: " + aux1.length);
+        System.out.println("aux 2: " + aux2.length);
+
         descarte.clear();
         //luego se mezcla cada parte como si fuera un mazo comun
         Mazo.mezclaMazoAux(aux1);
@@ -121,37 +124,36 @@ public class JuegoBeta extends Thread implements Serializable {
         for (int i = 0; i < cartas.length; i++) {
             if (i < k) {
                 cartas[i] = aux1[i];
-                if(cartas[i].valor==1){
-                    cartas[i].valor=11; // vuelve al valor original 11 todos los ases
+                if (cartas[i].valor == 1) {
+                    cartas[i].valor = 11; // vuelve al valor original 11 todos los ases
                 }
             } else {
                 cartas[i] = aux2[i - k];
-                if(cartas[i].valor==1){
-                    cartas[i].valor=11; // vuelve al valor original 11 todos los ases
+                if (cartas[i].valor == 1) {
+                    cartas[i].valor = 11; // vuelve al valor original 11 todos los ases
                 }
-                
+
             }
         }
-        System.out.println("Mazo de cartas nuevo: "+cartas.length);
+        System.out.println("Mazo de cartas nuevo: " + cartas.length);
         //se elige un punto de corte nuevamente y se descartan las 5 cartas de arriba otra vez y listos a seguir jugando
-       corte = (int) (Math.random() * (20 - 10 + 1) + 10);
-        
+        corte = (int) (Math.random() * (20 - 10 + 1) + 10);
+
         descarte.add(cartas[103]);
         descarte.add(cartas[102]);
         descarte.add(cartas[101]);
         descarte.add(cartas[100]);
         descarte.add(cartas[99]);
-        System.out.println("descarte: "+descarte.size());
+        System.out.println("descarte: " + descarte.size());
         //ya queda lista la posicion de la carta con la que se comenzara a repartir a los jugadores
         pos = 98;
-        
 
     }
 
     public void repartirCartas() {
-        if (corteAlcanzado==true) {
+        if (corteAlcanzado == true) {
             rearmarMazo();
-            corteAlcanzado=false;
+            corteAlcanzado = false;
         }
         player.mano.add(cartas[pos]);//carta[98]--para Jugador
         pos--;
@@ -227,16 +229,17 @@ public class JuegoBeta extends Thread implements Serializable {
     public void run() {
         while (true) {
             try {
-                sleep(10);
+                sleep(1);
             } catch (InterruptedException ex) {
                 Logger.getLogger(JuegoBeta.class.getName()).log(Level.SEVERE, null, ex);
             }
+            vista.panelJuego.info.setText(obtenerInfo());
             if (corteAlcanzado == false) {
                 if (pos <= corte) {
                     corteAlcanzado = true;
                 }
             }
-            if (player.apuesta > 0 && jugar == false) {
+            if (player.dinero>=50 && player.apuesta>=50 && jugar == false) {
                 vista.panelJuego.jugar.setEnabled(true);
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
@@ -263,7 +266,7 @@ public class JuegoBeta extends Thread implements Serializable {
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
             }
-            if (doblar) {
+            if (doblar && player.dinero>=player.total) {
                 vista.panelJuego.doblar.setEnabled(true);
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
@@ -298,13 +301,15 @@ public class JuegoBeta extends Thread implements Serializable {
             case 1:
 
                 if (player.bJ) {
-                    player.dinero += player.apuesta + (player.apuesta * 0.5);
+                    player.dinero+=player.total+(player.total*3/2);
+                    player.total=0;
                     vista.panelJuego.quienGana.setText("Jugador Gana: BLACKJACK");
-                } else {
-                    player.dinero += player.apuesta;
+                } else{
+                    player.dinero += player.total*2;
+                    player.total=0;
                     vista.panelJuego.quienGana.setText("Jugador Gana");
                 }
-                
+
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
                 break;
@@ -313,18 +318,21 @@ public class JuegoBeta extends Thread implements Serializable {
                     vista.panelJuego.quienGana.setText("La Casa Gana: BLACKJACK");
                 } else {
                     vista.panelJuego.quienGana.setText("La Casa Gana");
+                    
                 }
-                player.apuesta=0;
+                player.total=0;
+                if(player.dinero<player.apuesta){
+                    player.apuesta=player.dinero;
+                }
 
-                
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
                 break;
             case 3:
                 vista.panelJuego.quienGana.setText("Empate");
+                player.dinero+=player.total;
+                player.total=0;
 
-                
-               
                 vista.panelJuego.revalidate();
                 vista.panelJuego.repaint();
 
