@@ -29,7 +29,7 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
     public   PanelInicio panelInicio = new PanelInicio(this);
     public PanelJuego panelJuego = new PanelJuego(this);
     public JuegoBeta blackjack;
-    public static final ImageIcon icono = new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/IconoJuego.png"));
+//    public static final ImageIcon icono = new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/IconoJuego.png"));
 //    JPanel panelJuego=new PanelJuego();
 
     public VentanaPrincipal() {
@@ -57,7 +57,7 @@ public final class VentanaPrincipal extends JFrame implements Serializable{
         setTitle("BlackJack");
         setLayout(null);
         setSize(ANCHO, ALTO);
-        setIconImage(icono.getImage());
+//        setIconImage(icono.getImage());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         if (p1) {
