@@ -19,6 +19,7 @@ public class BlackJack implements Serializable{
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //por el momento se saco el icono de la ventana porque el que lo descargaba desde otra pc le da error
         VentanaPrincipal v1=new VentanaPrincipal();//version beta definitiva, resta implementar variantes:doblar,abrir y asegurar.
 //registrese para poder jugar el juego. Pronto se implementara un bonus de dinero que se da cuando el player se queda sin plata
 //para que sus datos se guarden salga correctamente por el boton salir de lo contrario no se guardaran los datos.
